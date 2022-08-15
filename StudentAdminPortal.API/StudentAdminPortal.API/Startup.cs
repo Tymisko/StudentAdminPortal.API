@@ -29,6 +29,15 @@ namespace StudentAdminPortal.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "AngularPolicy", cfg =>
+                {
+                    cfg.AllowAnyHeader();
+                    cfg.AllowAnyMethod();
+                    cfg.WithOrigins(Configuration["AllowedCORS"]);
+                });
+            });
 
             services.AddControllers();
             services.AddDbContext<StudentAdminContext>(options => options.UseSqlServer(Configuration.GetConnectionString("StudentAdminPortalDb")));
@@ -59,6 +68,8 @@ namespace StudentAdminPortal.API
 
             app.UseAuthorization();
 
+            app.UseCors("AngularPolicy");
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
