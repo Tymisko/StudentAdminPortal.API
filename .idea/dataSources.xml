@@ -9,5 +9,12 @@
       <jdbc-url>jdbc:sqlserver://footballquiz.database.windows.net:1433;database=rl9_quiz_test;user=rl9publishing@footballquiz;password=:F*`G4m-tWx(Dytq;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="shop@localhost" uuid="fb70a052-7470-4280-a294-1bf891885e19">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://localhost:3307/shop</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
