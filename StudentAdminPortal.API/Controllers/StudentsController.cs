@@ -9,6 +9,7 @@ using StudentAdminPortal.API.Repositories;
 namespace StudentAdminPortal.API.Controllers
 {
     [ApiController]
+    [Route("[controller]")]
     public class StudentsController : Controller
     {
         private readonly IStudentRepository _studentRepository;
@@ -21,7 +22,7 @@ namespace StudentAdminPortal.API.Controllers
         }
 
         [HttpGet]
-        [Route("[controller]")]
+        [Route("")]
         public async Task<IActionResult> GetAllStudents()
         {
             var students = await _studentRepository.GetStudentsAsync();
@@ -30,7 +31,7 @@ namespace StudentAdminPortal.API.Controllers
         }
 
         [HttpGet]
-        [Route("[controller]/{studentId:guid}")]
+        [Route("{studentId:guid}")]
         public async Task<IActionResult> GetStudentAsync([FromRoute] Guid studentId)
         {
             var student = await _studentRepository.GetStudentAsync(studentId);
@@ -44,10 +45,10 @@ namespace StudentAdminPortal.API.Controllers
         }
 
         [HttpPut]
-        [Route("[controller]/{studentId:guid}")]
+        [Route("{studentId:guid}")]
         public async Task<IActionResult> UpdateStudentAsync([FromRoute] Guid studentId, [FromBody] UpdateStudentRequest request)
         {
-            if (await _studentRepository.Exists(studentId))
+            if (await _studentRepository.ExistsAsync(studentId))
             {
                 // Update details
                 var updatedStudent = await _studentRepository.UpdateStudent(studentId, _mapper.Map<DataModels.Student>(request));
@@ -55,6 +56,19 @@ namespace StudentAdminPortal.API.Controllers
                 {
                     return Ok(_mapper.Map<Student>(updatedStudent));
                 }
+            }
+
+            return NotFound();
+        }
+
+        [HttpDelete]
+        [Route("{studentId:guid}")]
+        public async Task<IActionResult> DeleteStudentAsync([FromRoute] Guid studentId)
+        {
+            if (await _studentRepository.ExistsAsync(studentId))
+            {
+                var student = await _studentRepository.DeleteStudent(studentId);
+                return Ok(_mapper.Map<Student>(student));
             }
 
             return NotFound();

@@ -34,7 +34,7 @@ namespace StudentAdminPortal.API.Repositories
             return await _context.Gender.ToListAsync();
         }
 
-        public async Task<bool> Exists(Guid studentId)
+        public async Task<bool> ExistsAsync(Guid studentId)
         {
             return await _context.Student.AnyAsync(s => s.Id == studentId);
         }
@@ -55,6 +55,20 @@ namespace StudentAdminPortal.API.Repositories
 
                 await _context.SaveChangesAsync();
                 return existingStudent;
+            }
+
+            return null;
+        }
+
+        public async Task<Student> DeleteStudent(Guid studentId)
+        {
+            var student = await GetStudentAsync(studentId);
+
+            if (student != null)
+            {
+                _context.Student.Remove(student);
+                await _context.SaveChangesAsync();
+                return student;
             }
 
             return null;
