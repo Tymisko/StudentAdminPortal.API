@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using StudentAdminPortal.API.DataModels;
+using StudentAdminPortal.API.DomainModels;
+using Gender = StudentAdminPortal.API.DataModels.Gender;
+using Student = StudentAdminPortal.API.DataModels.Student;
 
 namespace StudentAdminPortal.API.Repositories
 {
@@ -16,5 +18,7 @@ namespace StudentAdminPortal.API.Repositories
         Task<Student> UpdateStudent(Guid studentId, Student request);
 
         Task<Student> DeleteStudent(Guid studentId);
+
+        Task<Student> AddStudent(Student request);
     }
 }
