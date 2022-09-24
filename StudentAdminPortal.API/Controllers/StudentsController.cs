@@ -1,8 +1,10 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using StudentAdminPortal.API.DomainModels;
 using StudentAdminPortal.API.Repositories;
 
@@ -13,11 +15,13 @@ namespace StudentAdminPortal.API.Controllers
     public class StudentsController : Controller
     {
         private readonly IStudentRepository _studentRepository;
+        private readonly IImageRepository _imageRepository;
         private readonly IMapper _mapper;
 
-        public StudentsController(IStudentRepository studentRepository, IMapper mapper)
+        public StudentsController(IStudentRepository studentRepository, IMapper mapper, IImageRepository imageRepository)
         {
             _studentRepository = studentRepository;
+            _imageRepository = imageRepository;
             _mapper = mapper;
         }
 
@@ -81,6 +85,25 @@ namespace StudentAdminPortal.API.Controllers
             var mappedRequest = _mapper.Map<DataModels.Student>(request);
             var student = await _studentRepository.AddStudent(mappedRequest);
             return CreatedAtAction(nameof(GetStudentAsync), new {studentId = student.Id}, _mapper.Map<Student>(student));
+        }
+
+        [HttpPost]
+        [Route("{studentId:guid}/upload-image")]
+        public async Task<IActionResult> UploadImageAsync([FromRoute] Guid studentId, IFormFile profileImage)
+        {
+            if (await _studentRepository.ExistsAsync(studentId))
+            {
+                var fileName = Guid.NewGuid() + Path.GetExtension(profileImage.FileName);
+                var fileImagePath = await _imageRepository.UploadAsync(profileImage, fileName);
+                if (await _studentRepository.UpdateProfileImageAsync(studentId, fileImagePath))
+                {
+                    return Ok(fileImagePath);
+                }
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error uploading image" ); 
+            }
+
+            return NotFound();
         }
     }
 }

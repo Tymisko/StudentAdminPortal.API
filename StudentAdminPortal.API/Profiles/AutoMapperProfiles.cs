@@ -1,7 +1,4 @@
-﻿using System.Runtime.InteropServices.ComTypes;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using DataModels = StudentAdminPortal.API.DataModels;
+﻿using AutoMapper;
 using StudentAdminPortal.API.DomainModels;
 using StudentAdminPortal.API.Profiles.AfterMaps;
 
