@@ -5,9 +5,9 @@ using StudentAdminPortal.API.Repositories;
 
 namespace StudentAdminPortal.API.Validators
 {
-	public class AddStudentRequestValidator : AbstractValidator<AddStudentRequest>
+	public class UpdateStudentRequestValidator : AbstractValidator<UpdateStudentRequest>
 	{
-		public AddStudentRequestValidator(IStudentRepository studentRepository)
+		public UpdateStudentRequestValidator(IStudentRepository studentRepository)
 		{
 			RuleFor(x => x.FirstName).NotEmpty();
 			RuleFor(x => x.LastName).NotEmpty();
