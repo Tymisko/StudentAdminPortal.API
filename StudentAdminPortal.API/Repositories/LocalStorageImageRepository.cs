@@ -8,7 +8,7 @@ namespace StudentAdminPortal.API.Repositories
     {
         public async Task<string> UploadAsync(IFormFile file, string fileName)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"Resources\Images", fileName);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "Images", fileName);
             using Stream fileStream = new FileStream(filePath, FileMode.Create);
             await file.CopyToAsync(fileStream);
 
@@ -17,7 +17,7 @@ namespace StudentAdminPortal.API.Repositories
 
         private string GetServerRelativePath(string fileName)
         {
-            return Path.Combine(@"Resources\Images", fileName);
+            return Path.Combine("Resources", "Images", fileName);
         }
     }
 }
